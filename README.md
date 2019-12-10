@@ -8,45 +8,35 @@ More info can be found at the Kaggle site: https://www.kaggle.com/c/aptos2019-bl
 ## Solution
 
 ### Data
-![Data](https://raw.githubusercontent.com/filipmu/Kaggle-LANL-Earthquake-Prediction/master/data.png)
+![Data](https://github.com/filipmu/Kaggle-APTOS-2019-Blindness/blob/master/doc_images/diabetic%20retinopathy%201.png)
 
+Source: https://www.biorxiv.org/content/biorxiv/early/2018/06/19/225508.full.pdf
 
-The time series data shows 16 experiments, with 14 of them complete.  There are approximately 600,000,000 acoustic time samples in the data.  Each time sample also has the time remaining before the next earthquake occurs.  The 'timetofailure' data is retrospective -not causal. At the time point the experiment is started, no one knows the timetofailure, since it has not yet physically failed in the run.  That is what makes this prediction problem hard. 
-
-The test data reflects many small (150,000 time sample) segments.  For each the model is required to predict a single time to failure.
+Kaggle provided a data set of 3660 training images.  In addition I found a number of other data sets available online to add to the training set.  In all, a total of 44,000 image samples were obtained.  A clinician has rated the presence of diabetic  retinopathy in each image on a scale of 0 to 4, according to International Clinical Diabetic Retinopathy severity scale (ICDR):
+* 0 – No DR
+* 1 – Mild DR
+* 2 – Moderate DR
+* 3 – Severe DR
+* 4 – Proliferative DR
+Ratings are based on human judgement of images with differing levels of brightness, orientation, and focus so there is some variation in the ratings.
 
 ### Data Selection
-Only training data reflecting the 14 completed experiments were used in the training to help ensure the training data distribution reflects full experiments.  Training data was segmented into 150,000 sample batches in order to match the test conditions.  Batches were taken out of each of the 14 experiments.  Batches were selected so that experiments were not mixed within a batch.  Batches were allowed to overlap within a particular experiment, using a step of 30,000 for a batch size of 150,000.
+The proportion of samples with a 0 - No DR rating was significantly higher than the other ratings.  Early results showed better prediction on a validation set if the images with 0 ratings were excluded from the training set.  In order to accomplish this the Kaggle supplied 0 rated images were retained, and the other 0 rated images were excluded from further training.  In addition it was found that a number of images were duplicated and so duplicates were removed as well.  This resulted in a training set of roughly 12,000 images.
 
-### Feature Generation
-Feature Generation was inspired by this starter kernel: https://www.kaggle.com/artgor/earthquakes-fe-more-features-and-samples
-The following additional features were added into the mix for final selection:
+### Image Preprocessing
+In order to compensage for brightness changes and to increase the contrast of the various indicators of retinopathy in the image a few preprocessing techniques were used.
+The first was taken from this starter example: https://www.kaggle.com/ratthachat/aptos-eye-preprocessing-in-diabetic-retinopathy.  In this example, contrast is increased by subtracting a blurred image from the original.
 
-#### Matched filtering
-![Matched Filtering](https://raw.githubusercontent.com/filipmu/Kaggle-LANL-Earthquake-Prediction/master/matched%20filter.png)
+Additional image processing was also used in the models:
+CLAHE
 
-A matched filtering approach was used to generate some additional features.  Matched filtering is a way to identify patterns in a time series and is used in radar, sonar, well as earthquake analysis.  I reviewed the acoustic data in Audacity and identified what looked like common and repeated patterns both early and late in the experiments.  These short samples (1000-3000 time stamps) were used to build a set of matched filter detectors using cross correlation between the sample and the training data set.
+CLAHEL
 
-#### Hilbert transform for envelope detection
-The hilbert transform was used to derive the analytical envelope of the matched filter outputs as well as the unfiltered training data.  For the unflitered training data the hilbert transform was low-pass filtered and the 10th percentile value was used (over the 150,000 time samples) in order to reflect the amount of peaks.
 
-#### Short Term Fourier Transform (STFT)
-A short term fourier transform was applied to both the match filtered and raw training data at various frequency bands.  The bands were selected based on bands with most signal energy during exploratory FFT analysis of the whole training data set.
+### Data Augmentation
 
-#### Peak detection
-Peak detection was used on both the matched filter features as well as STFT features.
+The training images were transformed at random during training to augment the data.  Images were flipped left to right, rotated from 0 - 45 degrees, size adjusted from 100%-110%, brightness varied 100-110%.
 
-#### Total Feature Space
-As a result of all the combinations of the above approaches 451 features were generated.  
-
-### Feature Selection
-#### Approach 1 - correlation
-Features were ranked in order of absolute correlation (ignoring features where correlation had no statistical significance)
-
-#### Approach 2 - model-based
-![Feature selection](https://raw.githubusercontent.com/filipmu/Kaggle-LANL-Earthquake-Prediction/master/feature%20selection.png)
-
-Features were selected using the feature importances given by the LGBM model.  5- fold cross-validation was used, grouping experiments within the folds.  This resulted in an ordered list of features.
 
 ### Training and Model combinations
 The following commbinations were made, resulting in 384 models
