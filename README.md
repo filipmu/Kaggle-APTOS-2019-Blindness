@@ -53,14 +53,36 @@ In this approach the RGB image is converted to the L*A*B* color space and CLAHE 
 
 The training images were transformed at random during training to augment the data.  Images were flipped left to right, rotated from 0 - 45 degrees, size adjusted from 100%-110%, brightness varied 100-110%.
 
+### Convolutional Neural Networks
+Two differerent architecture families were leveraged in this effort:
+
+#### Resnet
+The traditional residual NN that is pretrained on imagenet data.  https://pytorch.org/hub/pytorch_vision_resnet/
+Based on preliminary training and validation, Resnet18 was satisfactory, Resnet34 provided significant improvement, and Resnet50 did not provide substantial increase in validation accuracy.  Resnet34 was used going forward.
+
+#### Efficientnet
+An improved residual NN architecture that has better scaling properties (using less compute resources for similar imagenet performance as resnet) Paper: https://arxiv.org/abs/1905.11946  Pytorch implementation: https://github.com/lukemelas/EfficientNet-PyTorch
+
+EfficientNet-B6 was used based on success of other competitors.
+
+#### Approach for turning an Ordinal Regression problem into a Classification problem 
+Predicting Retinopathy ratings is an ordinal regression problem, since valid ratings are integers 0-4 and have an inherent order.  Convolutional neural network architectures are designed as classifiers.  if the ratings are used as classes predictions will not take advantage of the inherent order in the classes.  The model predicted probabilities for the classes might not make sense for ordinal data.  For example if rating 0 and rating 4 both have high probability of being correct while 1,2, or 3 are lower.
+
+The apriori information that the ratings are ordinal can be encoded in a new definition of output classes.  In this case, it becomes a multi-label problem.
+
+|Rating Input|Class Labels|Meaning|
+-----------------------------------
+|0| ''|r=0|
+|1 |'1'|r<=1|
+|2 |'1,2'|r<=2|
+|3 |'1,2,3'|r<=3|
+|4 |'1,2,3,4'|r<=4|
+
 
 ### Training and Model combinations
-The following commbinations were made, resulting in 384 models
-n_fold of 5, 14, 20.  For n_fold of 14, experiments were not split between folds.
-number of features of 10, 15, 20, 30, 50, 60, 70, all
-features sordered via correlation, or via model
-number of leaves of 31, 51, 91, 121
-boost type of gbdt or random forest
+The overall strategy was to design an ensemble model using a variety of convolutional neural network architectures appled to differing image pre processing. The following commbinations were made, resulting in 384 models
+
+Architectures (1) Resnet34 (2) 
 
 ### Model selection
 Model selection was based on the best cross-validation scores.  The contest allowed two submissions to be considered. These were selected so one was a result of cross-validation which does not group experiments, and one where experiment grouping was allowed. 
