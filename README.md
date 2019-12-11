@@ -146,4 +146,4 @@ To generate one prediction from the 7 models, the rating probabilities were summ
 
 
 
-Full notebook (via nbviewer): https://nbviewer.jupyter.org/github/filipmu/Kaggle-LANL-Earthquake-Prediction/blob/master/Kaggle%20LANL%20Earthquake%20Prediction%2013-best%20scoring%20submission.ipynb
+Full notebook (via nbviewer): https://nbviewer.jupyter.org/github/filipmu/Kaggle-APTOS-2019-Blindness/blob/master/APTOS%202019%20Blindness%20v11%20-%20effnet-b6.ipynb
