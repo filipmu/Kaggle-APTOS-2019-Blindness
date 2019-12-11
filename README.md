@@ -71,7 +71,7 @@ Predicting Retinopathy ratings is an ordinal regression problem, since valid rat
 The apriori information that the ratings are ordinal can be encoded in a new definition of output classes.  In this case, it becomes a multi-label problem.
 
 |Rating Input|Class Labels|Meaning|
------------------------------------
+|----|---|---|
 |0| ''|r=0|
 |1 |'1'|r<=1|
 |2 |'1,2'|r<=2|
