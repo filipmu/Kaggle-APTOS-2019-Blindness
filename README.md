@@ -8,11 +8,13 @@ More info can be found at the Kaggle site: https://www.kaggle.com/c/aptos2019-bl
 ## Solution
 
 ### Data
+Retinopathy causes changes in a healthy retina that can be seen in close-up retinal images.  Clinicians can assess the level of illness from characteristics of the image.
+
 ![Data](https://github.com/filipmu/Kaggle-APTOS-2019-Blindness/blob/master/doc_images/diabetic%20retinopathy%201.png)
 
 Source: https://www.biorxiv.org/content/biorxiv/early/2018/06/19/225508.full.pdf
 
-Kaggle provided a data set of 3660 training images.  In addition I found a number of other data sets available online to add to the training set.  In all, a total of 44,000 image samples were obtained.  A clinician has rated the presence of diabetic  retinopathy in each image on a scale of 0 to 4, according to International Clinical Diabetic Retinopathy severity scale (ICDR):
+A clinician rates the presence of diabetic  retinopathy in each image on a scale of 0 to 4, according to International Clinical Diabetic Retinopathy severity scale (ICDR):
 * 0 – No DR
 * 1 – Mild DR
 * 2 – Moderate DR
@@ -20,18 +22,29 @@ Kaggle provided a data set of 3660 training images.  In addition I found a numbe
 * 4 – Proliferative DR
 Ratings are based on human judgement of images with differing levels of brightness, orientation, and focus so there is some variation in the ratings.
 
+Kaggle provided a data set of 3660 training images with ratings.  In addition I found a number of other data sets available online to add to the training set.  In all, a total of 44,000 image samples were obtained.  
+
 ### Data Selection
 The proportion of samples with a 0 - No DR rating was significantly higher than the other ratings.  Early results showed better prediction on a validation set if the images with 0 ratings were excluded from the training set.  In order to accomplish this the Kaggle supplied 0 rated images were retained, and the other 0 rated images were excluded from further training.  In addition it was found that a number of images were duplicated and so duplicates were removed as well.  This resulted in a training set of roughly 12,000 images.
 
 ### Image Preprocessing
-In order to compensage for brightness changes and to increase the contrast of the various indicators of retinopathy in the image a few preprocessing techniques were used.
+In order to compensage for brightness changes and to increase the contrast of the various indicators of retinopathy in the image a few preprocessing techniques were used, leveraging the opencv python library cv2.
+
+#### Increased contrast
 The first was taken from this starter example: https://www.kaggle.com/ratthachat/aptos-eye-preprocessing-in-diabetic-retinopathy.  In this example, contrast is increased by subtracting a blurred image from the original.
 
+[Increased Contrast](https://github.com/filipmu/Kaggle-APTOS-2019-Blindness/blob/master/doc_images/blur%20contrast%20images.png)
+
 Additional image processing was also used in the models:
-CLAHE
 
-CLAHEL
+#### CLAHE (on RGB)
+python code from https://github.com/keepgallop/RIP/blob/master/RIP.py
 
+[CLAHE](https://github.com/filipmu/Kaggle-APTOS-2019-Blindness/blob/master/doc_images/clahe%20processed.png)
+
+#### CLAHE on LAB images
+
+[CLAHEL](https://github.com/filipmu/Kaggle-APTOS-2019-Blindness/blob/master/doc_images/clahel%20processed.png)
 
 ### Data Augmentation
 
