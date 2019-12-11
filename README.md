@@ -68,16 +68,40 @@ EfficientNet-B6 was used based on success of other competitors.
 #### Approach for turning an Ordinal Regression problem into a Classification problem 
 Predicting Retinopathy ratings is an ordinal regression problem, since valid ratings are integers 0-4 and have an inherent order.  Convolutional neural network architectures are designed as classifiers.  if the ratings are used as classes predictions will not take advantage of the inherent order in the classes.  The model predicted probabilities for the classes might not make sense for ordinal data.  For example if rating 0 and rating 4 both have high probability of being correct while 1,2, or 3 are lower.
 
-The apriori information that the ratings are ordinal can be encoded in a new definition of output classes.  In this case, it becomes a multi-label problem.
+The apriori information that the ratings are ordinal can be encoded in a new definition of output classes of the training data.  In this case, it becomes a multi-label problem.
+https://www.cs.waikato.ac.nz/~eibe/pubs/ordinal_tech_report.pdf
 
-|Rating Input|Class Labels|Meaning|
-|----|---|---|
-|0| ''|r=0|
-|1 |'1'|r<=1|
-|2 |'1,2'|r<=2|
-|3 |'1,2,3'|r<=3|
-|4 |'1,2,3,4'|r<=4|
+Mapping from rating to new class Labels:
+|Condition on Rating|New Class|
+|----|---|
+|r=0|   |
+|r>=1| 1 |
+|r>=2| 2|
+|r>=3|3|
+|r>=4|4|
 
+Examples of applying the mapping rule to generate mult-class labels
+|Rating|New Class Labels|
+|----|---|
+|0| ''|
+|1 |'1'|
+|2 |'1,2'|
+|3 |'1,2,3'|
+|4 |'1,2,3,4'|
+
+At prediction time, the following post-processing is done to calculate the probability of each rating based on the class prediction probabilities.
+
+|Rating Output|Rating Probability Equation*|
+|---|---|
+|0|1-P('1')|
+|1|P('1')-P('2')|
+|2|P('2')-P('3')|
+|3|P('3')-P('4')|
+|4|P('4')|
+
+* Negative values are clamped at 0
+
+The rating with the highest probability is chosen as the predicted rating.
 
 ### Training and Model combinations
 The overall strategy was to design an ensemble model using a variety of convolutional neural network architectures appled to differing image pre processing. The following commbinations were made, resulting in 384 models
