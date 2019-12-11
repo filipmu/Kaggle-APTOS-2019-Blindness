@@ -108,17 +108,17 @@ The rating with the highest probability is chosen as the predicted rating.
 ### Training and Model combinations
 The overall strategy was to design an ensemble model using a variety of convolutional neural network architectures appled to differing image pre processing. The following commbinations were made, resulting in 384 models
 
-Architectures 
--------------
-1 Resnet34
-2 EfficientNet-B6
+|Architectures |
+|---|
+|1 Resnet34|
+|2 EfficientNet-B6|
 
-Image Proc
-----------
-1 None
-2 Blur based contrast
-3 CLAHE
-4 CLAHE on L 
+|Image Proc|
+|---|
+|1 None|
+|2 Blur based contrast|
+|3 CLAHE|
+|4 CLAHE on L |
 
 This results in 8 different predictive combinations that were reviewed for high-scoring prediction on the test set. 
 
@@ -126,9 +126,11 @@ This results in 8 different predictive combinations that were reviewed for high-
 Training was done on a desktop PC with a 6 core CPU (Intel i7-8700) and 8GB GPU (RTX2070).  Training took about 48 hours.
 
 Example of the results of training Resnet34 with no image processing.
+
 ![resnet34train](https://github.com/filipmu/Kaggle-APTOS-2019-Blindness/blob/master/doc_images/training%20resnet34-none.png)
 
 Validation set performance
+
 ![confusion](https://github.com/filipmu/Kaggle-APTOS-2019-Blindness/blob/master/doc_images/confusion%20resnet34-done.png)
 
 ### Model selection
@@ -138,6 +140,6 @@ Resnet34-None, EfficientNet-B6-None, Resnet-34-Blur,Resnet34-CLAHE, EfficientNet
 ### Ensemble Model
 To generate one prediction from the 7 models, the rating probabilities were summed across the models and the rating with maximum sum was chosen as the output.
 
-![MPreds](https://raw.githubusercontent.com/filipmu/Kaggle-LANL-Earthquake-Prediction/master/preds.png)
+
 
 Full notebook (via nbviewer): https://nbviewer.jupyter.org/github/filipmu/Kaggle-LANL-Earthquake-Prediction/blob/master/Kaggle%20LANL%20Earthquake%20Prediction%2013-best%20scoring%20submission.ipynb
