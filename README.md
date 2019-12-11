@@ -37,12 +37,15 @@ The first was taken from this starter example: https://www.kaggle.com/ratthachat
 
 Additional image processing was also used in the models:
 
-#### CLAHE (on RGB)
+#### Contrast Limited Adaptive Histogram Equalization (CLAHE) method -on RGB
+Contrast increased using CLAHE independently on each channel of the RGB image.
+
 python code from https://github.com/keepgallop/RIP/blob/master/RIP.py
 
 ![CLAHE](https://github.com/filipmu/Kaggle-APTOS-2019-Blindness/blob/master/doc_images/clahe%20processed.png)
 
-#### CLAHE on LAB images
+#### CLAHE using CIELAB colorspace
+In this approach the RGB image is converted to the L*A*B* color space and CLAHE is used to increase contrast on only the Lightness (L) channel.  This is motivated by the fact that CIELAB was designed so that a numerical value change corresponds to amount of perceived change. Using this approach preserves global image color while normalizing contrast on L.
 
 ![CLAHEL](https://github.com/filipmu/Kaggle-APTOS-2019-Blindness/blob/master/doc_images/clahel%20processed.png)
 
