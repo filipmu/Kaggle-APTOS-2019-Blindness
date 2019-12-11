@@ -72,6 +72,7 @@ The apriori information that the ratings are ordinal can be encoded in a new def
 https://www.cs.waikato.ac.nz/~eibe/pubs/ordinal_tech_report.pdf
 
 Mapping from rating to new class Labels:
+
 |Condition on Rating|New Class|
 |----|---|
 |r=0|   |
@@ -81,6 +82,7 @@ Mapping from rating to new class Labels:
 |r>=4|4|
 
 Examples of applying the mapping rule to generate mult-class labels
+
 |Rating|New Class Labels|
 |----|---|
 |0| ''|
