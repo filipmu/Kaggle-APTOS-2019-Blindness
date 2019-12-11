@@ -33,18 +33,18 @@ In order to compensage for brightness changes and to increase the contrast of th
 #### Increased contrast
 The first was taken from this starter example: https://www.kaggle.com/ratthachat/aptos-eye-preprocessing-in-diabetic-retinopathy.  In this example, contrast is increased by subtracting a blurred image from the original.
 
-[Increased Contrast](https://github.com/filipmu/Kaggle-APTOS-2019-Blindness/blob/master/doc_images/blur%20contrast%20images.png)
+![Increased Contrast](https://github.com/filipmu/Kaggle-APTOS-2019-Blindness/blob/master/doc_images/blur%20contrast%20images.png)
 
 Additional image processing was also used in the models:
 
 #### CLAHE (on RGB)
 python code from https://github.com/keepgallop/RIP/blob/master/RIP.py
 
-[CLAHE](https://github.com/filipmu/Kaggle-APTOS-2019-Blindness/blob/master/doc_images/clahe%20processed.png)
+![CLAHE](https://github.com/filipmu/Kaggle-APTOS-2019-Blindness/blob/master/doc_images/clahe%20processed.png)
 
 #### CLAHE on LAB images
 
-[CLAHEL](https://github.com/filipmu/Kaggle-APTOS-2019-Blindness/blob/master/doc_images/clahel%20processed.png)
+![CLAHEL](https://github.com/filipmu/Kaggle-APTOS-2019-Blindness/blob/master/doc_images/clahel%20processed.png)
 
 ### Data Augmentation
 
