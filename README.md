@@ -23,6 +23,8 @@ A clinician rates the presence of diabetic  retinopathy in each image on a scale
 Ratings are based on human judgement of images with differing levels of brightness, orientation, and focus so there is some variation in the ratings.
 
 Kaggle provided a data set of 3660 training images with ratings.  In addition I found a number of other data sets available online to add to the training set.  In all, a total of 44,000 image samples were obtained.  
+### Evaluation Metric
+Submissions are scored based on the quadratic weighted kappa, which measures the agreement between two ratings. This metric typically varies from 0 (random agreement between raters) to 1 (complete agreement between raters). In the event that there is less agreement between the raters than expected by chance, this metric may go below 0. The quadratic weighted kappa is calculated between the scores assigned by the human rater and the predicted scores.
 
 ### Data Selection
 The proportion of samples with a 0 - No DR rating was significantly higher than the other ratings.  Early results showed better prediction on a validation set if the images with 0 ratings were excluded from the training set.  In order to accomplish this the Kaggle supplied 0 rated images were retained, and the other 0 rated images were excluded from further training.  In addition it was found that a number of images were duplicated and so duplicates were removed as well.  This resulted in a training set of roughly 12,000 images.
@@ -106,7 +108,7 @@ At prediction time, the following post-processing is done to calculate the proba
 The rating with the highest probability is chosen as the predicted rating.
 
 ### Training and Model combinations
-The overall strategy was to design an ensemble model using a variety of convolutional neural network architectures appled to differing image pre processing. The following commbinations were made, resulting in 384 models
+The overall strategy was to design an ensemble model using a variety of convolutional neural network architectures appled to differing image pre processing. The following commbinations were made, resulting in 8 models.
 
 |Architectures |
 |---|
@@ -120,10 +122,12 @@ The overall strategy was to design an ensemble model using a variety of convolut
 |3 CLAHE|
 |4 CLAHE on L |
 
-This results in 8 different predictive combinations that were reviewed for high-scoring prediction on the test set. 
+This results in 8 different predictive combinations that were reviewed for high-scoring prediction on the validation set. 
 
 #### Training
 Training was done on a desktop PC with a 6 core CPU (Intel i7-8700) and 8GB GPU (RTX2070).  Training took about 48 hours.
+
+For each model training was done in two phases.  In the first phase, only the final output layer was trained, leveraging the pretrained weights.  This training consisted of 10 epochs.  In the second phase the full network was trained over 20 epochs.
 
 Example of the results of training Resnet34 with no image processing.
 
